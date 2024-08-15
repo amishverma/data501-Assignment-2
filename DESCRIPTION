@@ -1,12 +1,13 @@
 Package: Ass2Data501
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Influence Measures for Linear Models
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Amish Verma
+Maintainer: The package maintainer <vermaamis@myvuw.ac.nz>
+Description: This package provides functions to calculate influence measures
+    such as Cook's Distance, DFFITS, and Hadi's Influence Measure for linear models. 
+    It also includes utilities for plotting these measures and identifying influential data points.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 

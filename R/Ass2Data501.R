@@ -1,8 +1,21 @@
-library(usethis)
-library(devtools)
-library(roxygen2)
-
-
+#' Calculate Cook's Distance
+#'
+#' This function calculates Cook's Distance for each observation in a linear model.
+#'
+#' @param model A linear model object of class \code{lm}.
+#' @param data A data frame containing the data used to fit the linear model.
+#' The data should have the same structure and number of rows as the model's data
+#'
+#' @return A numeric vector of Cook's Distance values for each observation in the model.
+#' @export
+#'
+#' @examples
+#' data(mtcars)
+#' model <- lm(mpg ~ wt + hp, data = mtcars)
+#' cooks_d <- calculate_cooks_distance(model, mtcars)
+#' plot_influence_measures(model,mtcars,method="cooks")
+#'
+#'
 calculate_cooks_distance <- function(model, data) {
   validate_inputs(data, model)
 
@@ -17,6 +30,31 @@ calculate_cooks_distance <- function(model, data) {
   return(cooks_d)
 }
 
+
+
+
+
+
+
+
+
+#' Calculate DFFITS
+#' This function calculates the DFFITS value for each observation in a linear model.
+#' DFFITS is a measure used to assess the influence of each observation on the fitted values of a regression model.
+#'
+#' @param model A linear model object of class \code{lm}.
+#' @param data A data frame containing the data used to fit the linear model.
+#' The data should have the same structure and number of rows as the model's data
+#'
+#' @return A numeric vector of DFFITS values for each observation in the model
+#' @export
+#'
+#' @examples
+#' data(mtcars)
+#' model <- lm(mpg ~ wt + hp, data = mtcars)
+#' dffits_values <- calculate_dffits(model, mtcars)
+#'
+#'
 calculate_dffits <- function(model, data) {
   validate_inputs(data, model)
 
@@ -37,6 +75,22 @@ calculate_dffits <- function(model, data) {
 
 
 
+#' Calculate Hadi's Influence Measure.
+#'
+#' This function calculates Hadi influence measure for each observation in a linear model.
+#' Hadi's influence measure is used to identify influential observations that have an impact on the regression model.
+#'
+#' @param model A linear model object of class \code{lm}
+#' @param data  A data frame containing the data used to fit the linear model.
+#'
+#' @return A numeric vector of Hadi's influence measure values for each observation in the model.
+#' @export
+#'
+#' @examples
+#' data(mtcars)
+#' model <- lm(mpg ~ wt + hp, data = mtcars)
+#' hadi_values <- calculate_hadis_influence(model, mtcars)
+#'
 calculate_hadis_influence <- function(model, data) {
   validate_inputs(data, model)
 
@@ -55,6 +109,20 @@ calculate_hadis_influence <- function(model, data) {
 
 
 
+#' Validate Inputs for Influence Measure Calculations
+#'
+#' This function validates the inputs to ensure they are suitable for calculating influence measures.
+#' @param data A data frame containing the data used to fit the linear model.
+#' @param model A linear model object of class \code{lm}.
+#'
+#' @return  No return value since the function is used for checking
+#' @export
+#'
+#' @examples
+#' data(mtcars)
+#' model <- lm(mpg ~ wt + hp, data = mtcars)
+#' validate_inputs(mtcars, model)
+#'
 validate_inputs<-function(data,model){
   if (!inherits(model, "lm")) {
     stop("The model must be an object of class 'lm'.")
@@ -82,6 +150,23 @@ validate_inputs<-function(data,model){
 
 
 
+#' Plot Influence Measures for Linear Models
+#'
+#' This function plots the influence measures (Cook's Distance, DFFITS, or Hadi's Influence Measure)
+#'
+#' @param model A linear model object of class \code{lm}.
+#' @param data  A data frame containing the data used to fit the linear model.
+#' @param method A character string specifying which influence measure to plot.
+#' Must be one of \code{"cooks"}, \code{"dffits"}, or \code{"hadi"}.
+#'
+#' @return A plot of the selected influence measure with points above the threshold labeled.
+#' @export
+#'
+#' @examples
+#' data(mtcars)
+#' model <- lm(mpg ~ wt + hp, data = mtcars)
+#' plot_influence_measuress(model,mtcars,method="cooks")
+#'
 plot_influence_measures <- function(model, data, method = "cooks") {
   # Define valid methods
   valid_methods <- c("cooks", "dffits", "hadi")
@@ -131,77 +216,7 @@ plot_influence_measures <- function(model, data, method = "cooks") {
 }
 
 
-# Fit the model
-model <- lm(mpg ~ wt + hp, data = mtcars)
-
-# Plot Cook's Distance using the full method name
-plot_influence_measures(model, mtcars, method = "cooks")
-
-# Plot DFFITS
-plot_influence_measures(model, mtcars, method = "dffits")
-
-# Plot Hadi's Influence Measure
-plot_influence_measures(model, mtcars, method = "hadi")
-
-# This will throw an error since abbreviations are no longer allowed
-#plot_influence_measures(model, mtcars, method = "c")
 
 
-library(testthat)
-#use_testthat()
-
-test_that("calculate_cooks_distance works correctly", {
-  data(mtcars)
-  model <- lm(mpg ~ wt + hp, data = mtcars)
-  cooks_d <- calculate_cooks_distance(model, mtcars)
-  expect_type(cooks_d, "double")
-  expect_equal(length(cooks_d), nrow(mtcars))
-})
-
-test_that("validate_inputs catches incorrect inputs", {
-  data(mtcars)
-  model <- lm(mpg ~ wt + hp, data = mtcars)
-
-  expect_silent(validate_inputs(mtcars, model))
-
-  mtcars_na <- mtcars
-  mtcars_na$wt[1] <- NA
-  expect_error(validate_inputs(mtcars_na, model), "NA values found in the data.")
-
-  mtcars_inf <- mtcars
-  mtcars_inf$wt[1] <- Inf
-  expect_error(validate_inputs(mtcars_inf, model), "Infinite values found in the data.")
-
-  expect_error(validate_inputs(as.matrix(mtcars), model), "The data must be a data frame.")
-
-  mtcars_sub <- mtcars[-1, ]
-  expect_error(validate_inputs(mtcars_sub, model), "Mismatch between the number of rows in the data and the number of residuals in the model.")
-})
-
-
-
-
-test_that("plot_influence_measures handles valid method arguments", {
-  data(mtcars)
-  model <- lm(mpg ~ wt + hp, data = mtcars)
-
-  # Test with full valid method names
-  expect_silent(plot_influence_measures(model, mtcars, method = "cooks"))
-  expect_silent(plot_influence_measures(model, mtcars, method = "dffits"))
-  expect_silent(plot_influence_measures(model, mtcars, method = "hadi"))
-})
-
-test_that("plot_influence_measures throws error for invalid method arguments", {
-  data(mtcars)
-  model <- lm(mpg ~ wt + hp, data = mtcars)
-
-  # Test with an invalid method name
-  expect_error(plot_influence_measures(model, mtcars, method = "invalid"),
-               "Invalid method. Choose from 'cooks', 'dffits', or 'hadi'.")
-
-  # Test with an abbreviation (which should now be invalid)
-  expect_error(plot_influence_measures(model, mtcars, method = "c"),
-               "Invalid method. Choose from 'cooks', 'dffits', or 'hadi'.")
-})
 
 
