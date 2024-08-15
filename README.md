@@ -11,7 +11,7 @@ for linear models.
 
 ## Installation
 
-You can install the development version of Ass2Data501 like from
+You can install the development version of Ass2Data501 from
 
 [Github](https://github.com/amishverma/data501-Assignment-2) with:
 

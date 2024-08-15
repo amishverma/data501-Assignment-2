@@ -22,7 +22,7 @@ The goal of Ass2Data501 is to calculate and visualize influence measures for lin
 
 ## Installation
 
-You can install the development version of Ass2Data501 like from
+You can install the development version of Ass2Data501 from
 
 [Github](https://github.com/amishverma/data501-Assignment-2) with:
 
