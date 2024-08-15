@@ -1,21 +1,5 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   https://r-pkgs.org
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
-hello <- function() {
-  print("Hello, world!")
-}
+#library(testthat)
+#use_testthat()
 
 test_that("calculate_cooks_distance works correctly", {
   data(mtcars)
@@ -45,9 +29,6 @@ test_that("validate_inputs catches incorrect inputs", {
   expect_error(validate_inputs(mtcars_sub, model), "Mismatch between the number of rows in the data and the number of residuals in the model.")
 })
 
-
-
-
 test_that("plot_influence_measures handles valid method arguments", {
   data(mtcars)
   model <- lm(mpg ~ wt + hp, data = mtcars)
@@ -70,6 +51,3 @@ test_that("plot_influence_measures throws error for invalid method arguments", {
   expect_error(plot_influence_measures(model, mtcars, method = "c"),
                "Invalid method. Choose from 'cooks', 'dffits', or 'hadi'.")
 })
-
-
-

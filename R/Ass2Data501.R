@@ -1,5 +1,4 @@
 #' Calculate Cook's Distance
-#'
 #' This function calculates Cook's Distance for each observation in a linear model.
 #'
 #' @param model A linear model object of class \code{lm}.
@@ -7,15 +6,14 @@
 #' The data should have the same structure and number of rows as the model's data
 #'
 #' @return A numeric vector of Cook's Distance values for each observation in the model.
+#' @importFrom stats hatvalues residuals rstudent coef
 #' @export
 #'
 #' @examples
 #' data(mtcars)
 #' model <- lm(mpg ~ wt + hp, data = mtcars)
 #' cooks_d <- calculate_cooks_distance(model, mtcars)
-#' plot_influence_measures(model,mtcars,method="cooks")
-#'
-#'
+
 calculate_cooks_distance <- function(model, data) {
   validate_inputs(data, model)
 
@@ -47,14 +45,14 @@ calculate_cooks_distance <- function(model, data) {
 #' The data should have the same structure and number of rows as the model's data
 #'
 #' @return A numeric vector of DFFITS values for each observation in the model
+#' @importFrom stats hatvalues residuals rstudent coef
 #' @export
 #'
 #' @examples
 #' data(mtcars)
 #' model <- lm(mpg ~ wt + hp, data = mtcars)
 #' dffits_values <- calculate_dffits(model, mtcars)
-#'
-#'
+
 calculate_dffits <- function(model, data) {
   validate_inputs(data, model)
 
@@ -84,13 +82,14 @@ calculate_dffits <- function(model, data) {
 #' @param data  A data frame containing the data used to fit the linear model.
 #'
 #' @return A numeric vector of Hadi's influence measure values for each observation in the model.
+#' @importFrom stats hatvalues residuals rstudent coef
 #' @export
 #'
 #' @examples
 #' data(mtcars)
 #' model <- lm(mpg ~ wt + hp, data = mtcars)
 #' hadi_values <- calculate_hadis_influence(model, mtcars)
-#'
+
 calculate_hadis_influence <- function(model, data) {
   validate_inputs(data, model)
 
@@ -122,7 +121,7 @@ calculate_hadis_influence <- function(model, data) {
 #' data(mtcars)
 #' model <- lm(mpg ~ wt + hp, data = mtcars)
 #' validate_inputs(mtcars, model)
-#'
+
 validate_inputs<-function(data,model){
   if (!inherits(model, "lm")) {
     stop("The model must be an object of class 'lm'.")
@@ -151,22 +150,21 @@ validate_inputs<-function(data,model){
 
 
 #' Plot Influence Measures for Linear Models
-#'
-#' This function plots the influence measures (Cook's Distance, DFFITS, or Hadi's Influence Measure)
-#'
+#'This function plots the influence measures (Cook's Distance, DFFITS, or Hadi's Influence Measure)
 #' @param model A linear model object of class \code{lm}.
 #' @param data  A data frame containing the data used to fit the linear model.
 #' @param method A character string specifying which influence measure to plot.
 #' Must be one of \code{"cooks"}, \code{"dffits"}, or \code{"hadi"}.
 #'
 #' @return A plot of the selected influence measure with points above the threshold labeled.
+#' @importFrom graphics abline points text
 #' @export
 #'
 #' @examples
 #' data(mtcars)
 #' model <- lm(mpg ~ wt + hp, data = mtcars)
-#' plot_influence_measuress(model,mtcars,method="cooks")
-#'
+#' plot_influence_measures (model,mtcars,method="cooks")
+
 plot_influence_measures <- function(model, data, method = "cooks") {
   # Define valid methods
   valid_methods <- c("cooks", "dffits", "hadi")

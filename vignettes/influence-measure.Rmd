@@ -1,0 +1,64 @@
+---
+title: "influence-measure"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{influence-measure}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(Ass2Data501)
+```
+
+# Introduction
+
+This vignette demonstrates how to use the functions in the `Ass2Data501` package to calculate and visualize influence measures for linear models. The package includes functions for calculating Cook's Distance, DFFITS, and Hadi's Influence Measure, as well as a utility for plotting these measures and identifying influential observations.
+
+
+# Example data
+
+We will use the mtcars dataset, which is included with base R, to demonstrate the functionality of the package.
+
+```{r}
+data(mtcars)
+head(mtcars)
+```
+
+
+# Cooks distance
+  
+```{r}
+data(mtcars)
+model <- lm(mpg ~ wt + hp, data = mtcars)
+plot_influence_measures(model,mtcars,method="cooks")
+```
+
+
+# Dffits 
+
+```{r}
+plot_influence_measures(model,mtcars,method="dffits")
+```
+
+
+
+# Hadi
+
+```{r}
+plot_influence_measures(model,mtcars,method="hadi")
+
+```
+
+
+
+# Conclusion
+
+The Ass2Data501 package provides the plots the influence of individual observations on linear regression models. By using Cook's Distance, DFFITS, and Hadi's Influence Measure, we can better understand which data points might be exerting influence on your model's fit and make more informed decisions about data quality and model robustness.
